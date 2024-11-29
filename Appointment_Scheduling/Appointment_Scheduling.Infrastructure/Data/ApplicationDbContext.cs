@@ -11,8 +11,8 @@ namespace Appointment_Scheduling.Infrastructure.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<ProviderAvailability> ProviderAvailability { get; set; }
+        public DbSet<Appointment> Appointments { get; set; } = null!;
+        public DbSet<ProviderAvailability> ProviderAvailability { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
