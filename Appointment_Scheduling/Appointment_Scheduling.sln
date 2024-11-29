@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Appointment_Scheduling.API", "Appointment_Scheduling.API\Appointment_Scheduling.API.csproj", "{54E6A8BF-B74D-4730-BB44-326D111C8CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appointment_Scheduling.Core", "Appointment_Scheduling.Core\Appointment_Scheduling.Core.csproj", "{75410D98-B6C1-46F6-AA96-E6E360F5D2B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Appointment_Scheduling.Core", "Appointment_Scheduling.Core\Appointment_Scheduling.Core.csproj", "{75410D98-B6C1-46F6-AA96-E6E360F5D2B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appointment_Scheduling.Infrastructure", "Appointment_Scheduling.Infrastructure\Appointment_Scheduling.Infrastructure.csproj", "{B9DE9830-79DB-493D-A2A6-30BB867CE496}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{75410D98-B6C1-46F6-AA96-E6E360F5D2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75410D98-B6C1-46F6-AA96-E6E360F5D2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75410D98-B6C1-46F6-AA96-E6E360F5D2B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
