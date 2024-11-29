@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Appointment_Scheduling.Core\Appointment_Scheduling.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\Interfaces\" />
+    <Folder Include="Repository\Implementations\" />
+  </ItemGroup>
+
 </Project>

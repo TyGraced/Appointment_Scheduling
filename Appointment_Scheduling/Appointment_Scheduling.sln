@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Appointment_Scheduling.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appointment_Scheduling.Infrastructure", "Appointment_Scheduling.Infrastructure\Appointment_Scheduling.Infrastructure.csproj", "{B9DE9830-79DB-493D-A2A6-30BB867CE496}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appointment_Scheduling.Application", "Appointment_Scheduling.Application\Appointment_Scheduling.Application.csproj", "{F746DF9A-20A3-4862-9411-11A61ECAFC11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9DE9830-79DB-493D-A2A6-30BB867CE496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F746DF9A-20A3-4862-9411-11A61ECAFC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F746DF9A-20A3-4862-9411-11A61ECAFC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F746DF9A-20A3-4862-9411-11A61ECAFC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F746DF9A-20A3-4862-9411-11A61ECAFC11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
