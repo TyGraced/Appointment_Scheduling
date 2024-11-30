@@ -38,6 +38,21 @@ namespace Appointment_Scheduling.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(a => a.ProviderId)
                 .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.Entity<Appointment>(entity =>
+            {
+                entity.Property(a => a.Date)
+                      .HasColumnType("date")
+                      .IsRequired();
+
+                entity.Property(a => a.StartTime)
+                      .HasColumnType("time")
+                      .IsRequired();
+
+                entity.Property(a => a.EndTime)
+                      .HasColumnType("time")
+                      .IsRequired();
+            });
         }
 
     }
