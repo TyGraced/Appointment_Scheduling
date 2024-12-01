@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Implementations\" />
-    <Folder Include="Services\Interfaces\" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.39" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Appointment_Scheduling.Core\Appointment_Scheduling.Core.csproj" />
+    <ProjectReference Include="..\Appointment_Scheduling.Infrastructure\Appointment_Scheduling.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

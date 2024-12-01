@@ -10,6 +10,8 @@ namespace Appointment_Scheduling.Core.Models
 
         [Required]
         public string LastName { get; set; } = string.Empty;
+        
+        public string? ProviderName { get; set; } = string.Empty;
 
         [Required]
         public DateTime DateOfBirth { get; set; }

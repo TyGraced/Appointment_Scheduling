@@ -19,10 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Appointment_Scheduling.Application\Appointment_Scheduling.Application.csproj" />
+    <ProjectReference Include="..\Appointment_Scheduling.Core\Appointment_Scheduling.Core.csproj" />
     <ProjectReference Include="..\Appointment_Scheduling.Infrastructure\Appointment_Scheduling.Infrastructure.csproj" />
   </ItemGroup>
 
