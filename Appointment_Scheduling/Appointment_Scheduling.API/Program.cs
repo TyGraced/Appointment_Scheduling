@@ -1,5 +1,7 @@
 using Appointment_Scheduling.API.Extensions;
 using Appointment_Scheduling.API.LoggerService;
+using Appointment_Scheduling.Application.Services.Implementations;
+using Appointment_Scheduling.Application.Services.Interfaces;
 using Appointment_Scheduling.Infrastructure.Data.SeedData;
 using Microsoft.AspNetCore.Identity;
 using NLog;
@@ -14,8 +16,11 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.ConfigureJwt(builder.Configuration);
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureNpgsqlContext(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.AddScoped<ITokenService, TokenService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

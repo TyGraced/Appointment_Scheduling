@@ -1,7 +1,11 @@
 ﻿using Appointment_Scheduling.API.LoggerService;
+using Appointment_Scheduling.Application.Services.Implementations;
+using Appointment_Scheduling.Application.Services.Interfaces;
 using Appointment_Scheduling.Core.Models;
 using Appointment_Scheduling.Core.Settings;
 using Appointment_Scheduling.Infrastructure.Data;
+using Appointment_Scheduling.Infrastructure.Repository.Implementations;
+using Appointment_Scheduling.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +99,13 @@ namespace Appointment_Scheduling.API.Extensions
         }
 
         public static void ConfigureLoggerService(this IServiceCollection services) =>
-                    services.AddSingleton<ILoggerManager, LoggerManager>();
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+        
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+            services.AddScoped<IServiceManager, ServiceManager>();
+
     }
 }
