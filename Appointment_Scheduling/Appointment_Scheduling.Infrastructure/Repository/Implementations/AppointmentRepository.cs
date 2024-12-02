@@ -70,6 +70,20 @@ namespace Appointment_Scheduling.Infrastructure.Repository.Implementations
             Create(appointment);
         }
 
+        public async Task<Appointment?> GetOverlappingAppointmentAsync(Guid providerId, 
+            DateTime newStartTime, DateTime newEndTime, bool trackChanges)
+        {
+            var newStart = newStartTime.TimeOfDay;
+            var newEnd = newEndTime.TimeOfDay;
+
+            return await FindByCondition(a =>
+                    a.ProviderId == providerId &&
+                    a.StartTime < newEnd &&
+                    a.EndTime > newStart,
+                    trackChanges)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task CancelAppointmentAsync(Guid patientId, Guid providerId)
         {
             var existingAppointment = await FindByCondition(a => a.PatientId.Equals(patientId)

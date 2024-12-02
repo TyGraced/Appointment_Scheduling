@@ -2,9 +2,12 @@ using Appointment_Scheduling.API.Extensions;
 using Appointment_Scheduling.API.LoggerService;
 using Appointment_Scheduling.Application.Services.Implementations;
 using Appointment_Scheduling.Application.Services.Interfaces;
+using Appointment_Scheduling.Core.Validators;
 using Appointment_Scheduling.Infrastructure.Data.SeedData;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using NLog;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,14 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureNpgsqlContext(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(RegisterRequestValidator).Assembly))
+    .AddJsonOptions(options =>
+     {
+         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+         options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
+     });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

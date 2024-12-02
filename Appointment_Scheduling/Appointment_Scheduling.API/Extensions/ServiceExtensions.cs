@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using FluentValidation.AspNetCore;
 
 namespace Appointment_Scheduling.API.Extensions
 {
@@ -21,6 +22,18 @@ namespace Appointment_Scheduling.API.Extensions
         {
             services.AddSwaggerGen(opt =>
             {
+                opt.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "Appointment_Scheduling API", 
+                    Version = "v1",
+                    Description = "Appointment_Scheduling API by Ty_Graced",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Temitayo Adesugba",
+                        Email = "temitayoadesugba@gmail.com",
+                        Url = new Uri("https://www.linkedin.com/in/temitayo-adesugba")
+                    }
+                });
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",

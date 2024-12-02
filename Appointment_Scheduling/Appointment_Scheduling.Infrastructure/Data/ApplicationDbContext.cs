@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Net.NetworkInformation;
 
 namespace Appointment_Scheduling.Infrastructure.Data
 {
@@ -25,7 +26,15 @@ namespace Appointment_Scheduling.Infrastructure.Data
 
             builder.Entity<Appointment>()
                 .Property(e => e.Status)
-                .HasConversion(converter);
+            .HasConversion(converter);
+
+            var converterDayOfWeek = new ValueConverter<DayOfWeek, string>(
+            v => v.ToString(),
+            v => (DayOfWeek)Enum.Parse(typeof(DayOfWeek), v));
+
+            builder.Entity<ProviderAvailability>()
+                .Property(e => e.DayOfWeek)
+                .HasConversion(converterDayOfWeek);
 
             builder.Entity<Appointment>()
                 .HasOne(a => a.Patient)
