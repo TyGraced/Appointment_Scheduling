@@ -6,5 +6,6 @@
         ITokenService TokenService { get; }
         IProviderService ProviderService {  get; }
         IAdminService AdminService {  get; }
+        IPatientService PatientService {  get; }
     }
 }

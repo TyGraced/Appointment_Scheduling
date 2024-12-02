@@ -14,6 +14,7 @@ namespace Appointment_Scheduling.Application.Services.Implementations
         private readonly Lazy<ITokenService> _tokenService;
         private readonly Lazy<IProviderService> _providerService;
         private readonly Lazy<IAdminService> _adminService;
+        private readonly Lazy<IPatientService> _patientService;
         public ServiceManager(IRepositoryManager repositoryManager, IHttpContextAccessor _contextAccessor,
             UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             IOptions<JwtSettings> configuration, ITokenService tokenService)
@@ -26,11 +27,14 @@ namespace Appointment_Scheduling.Application.Services.Implementations
                     new ProviderService(_contextAccessor, repositoryManager, userManager));
             _adminService = new Lazy<IAdminService>(() =>
                     new AdminService(_contextAccessor, repositoryManager, userManager));
+            _patientService = new Lazy<IPatientService>(() =>
+                    new PatientService(_contextAccessor, repositoryManager, userManager));
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
         public ITokenService TokenService => _tokenService.Value;
         public IProviderService ProviderService => _providerService.Value;
         public IAdminService AdminService => _adminService.Value;
+        public IPatientService PatientService => _patientService.Value;
     }
 }

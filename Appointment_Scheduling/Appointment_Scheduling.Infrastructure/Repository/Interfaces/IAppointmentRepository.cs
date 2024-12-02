@@ -20,6 +20,7 @@ namespace Appointment_Scheduling.Infrastructure.Repository.Interfaces
         // Patient
         Task BookAppointment(Appointment appointment);
         Task CancelAppointmentAsync(Guid patientId, Guid providerId);
-
+        Task<Appointment?> GetOverlappingAppointmentAsync(Guid providerId,
+            DateTime newStartTime, DateTime newEndTime, bool trackChanges);
     }
 }
