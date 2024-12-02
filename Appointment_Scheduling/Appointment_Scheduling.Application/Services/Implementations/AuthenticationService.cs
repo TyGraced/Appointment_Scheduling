@@ -38,7 +38,7 @@ namespace Appointment_Scheduling.Application.Services.Implementations
             {
                 var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
                 Console.WriteLine($"User registration failed: {errors}");
-            return ApiResponse<string>.Failure($"User registration failed.");
+            return ApiResponse<string>.Failure($"User registration failed: {errors}");
             }
 
             if (request.IsPatient)

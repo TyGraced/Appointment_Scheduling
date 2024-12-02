@@ -2,6 +2,8 @@
 {
     public interface IRepositoryManager
     {
+        IAppointmentRepository Appointment {  get; }
+        IAvailabilityRepository Availability { get; }
         Task SaveAsync();
     }
 }

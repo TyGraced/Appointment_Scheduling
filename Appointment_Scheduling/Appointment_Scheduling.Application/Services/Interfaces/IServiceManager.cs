@@ -4,5 +4,7 @@
     {
         IAuthenticationService AuthenticationService { get; }
         ITokenService TokenService { get; }
+        IProviderService ProviderService {  get; }
+        IAdminService AdminService {  get; }
     }
 }
