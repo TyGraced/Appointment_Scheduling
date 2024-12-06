@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Net.NetworkInformation;
+using System.Reflection.Emit;
 
 namespace Appointment_Scheduling.Infrastructure.Data
 {
@@ -18,7 +19,6 @@ namespace Appointment_Scheduling.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
 
             var converter = new ValueConverter<AppointmentStatus, string>(
                 v => v.ToString(),

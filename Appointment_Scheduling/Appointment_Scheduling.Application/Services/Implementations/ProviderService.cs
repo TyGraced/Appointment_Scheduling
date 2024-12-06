@@ -1,5 +1,7 @@
-﻿using Appointment_Scheduling.Application.Services.Interfaces;
+﻿using Appointment_Scheduling.Application.Services.Implementations;
+using Appointment_Scheduling.Application.Services.Interfaces;
 using Appointment_Scheduling.Core.DTOs;
+using Appointment_Scheduling.Core.Enums;
 using Appointment_Scheduling.Core.Exceptions;
 using Appointment_Scheduling.Core.Models;
 using Appointment_Scheduling.Infrastructure.Repository.Interfaces;
@@ -14,13 +16,16 @@ namespace Appointment_Scheduling.Application.Services.Implementations
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IRepositoryManager _repository;
+        private readonly IEmailService _emailService;
+
 
         public ProviderService(IHttpContextAccessor contextAccessor, IRepositoryManager repository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, IEmailService emailService)
         {
             _contextAccessor = contextAccessor;
             _repository = repository;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         public async Task<ApiResponse<string>> SetAvailabilityAsync(SetAvailabilityRequest request)
@@ -60,8 +65,8 @@ namespace Appointment_Scheduling.Application.Services.Implementations
 
             var appointment = await _repository.Appointment.GetAppointmentAsync(user.Id, patientId, trackChanges);
 
-            if (appointment== null)
-                throw new AppointmentNotFound(patientId); 
+            if (appointment == null)
+                throw new AppointmentNotFound(patientId);
 
             return ApiResponse<Appointment>.Success(appointment);
         }
@@ -78,12 +83,31 @@ namespace Appointment_Scheduling.Application.Services.Implementations
             return ApiResponse<IEnumerable<Appointment>>.Success(appointments);
         }
 
-        public async Task<ApiResponse<string>> UpdateAppointmentStatus(UpdateProviderAppointmentStatusRequest request)
+        public async Task<ApiResponse<string>> UpdateAppointmentStatus(UpdateProviderAppointmentStatusRequest request, bool trackChanges)
         {
             ApplicationUser user = await ProviderCheck();
+            var providerId = user.Id;
 
-            await _repository.Appointment.UpdateAppointmentStatusAsync(user.Id, request.PatientId, request.Status);
+            await _repository.Appointment.UpdateAppointmentStatusAsync(providerId, request.PatientId, request.Status);
             await _repository.SaveAsync();
+
+            var userToNotify = await _repository.User.GetUserAsync(request.PatientId, trackChanges);
+
+            if (request.Status == AppointmentStatus.Confirmed)
+            {
+                var emailMessage = $"Your Appointment scheduling has been confirmed.";
+                await _emailService.SendEmailAsync(userToNotify!.Email, "Appointment Confirmed", emailMessage);
+            }
+            if (request.Status == AppointmentStatus.Cancelled)
+            {
+                var emailMessage = $"Your Appointment scheduling has been cancelled.";
+                await _emailService.SendEmailAsync(userToNotify!.Email, "Appointment Cancelled", emailMessage);
+            }
+            if (request.Status == AppointmentStatus.Completed)
+            {
+                var emailMessage = $"Your Appointment scheduling has been completed.";
+                await _emailService.SendEmailAsync(userToNotify!.Email, "Appointment Completed", emailMessage);
+            }
 
             return ApiResponse<string>.Success("Appointment status updated successfully");
         }

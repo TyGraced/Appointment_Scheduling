@@ -26,7 +26,7 @@ namespace Appointment_Scheduling.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> UpdateAppointmentStatus([FromBody] UpdateProviderAppointmentStatusRequest request)
         {
-            var result = await _service.ProviderService.UpdateAppointmentStatus(request);
+            var result = await _service.ProviderService.UpdateAppointmentStatus(request, trackChanges:false);
             return Ok(result);
         }
 

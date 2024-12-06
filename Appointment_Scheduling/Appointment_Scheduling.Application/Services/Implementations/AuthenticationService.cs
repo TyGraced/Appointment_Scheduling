@@ -10,13 +10,15 @@ namespace Appointment_Scheduling.Application.Services.Implementations
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
 
         public AuthenticationService(UserManager<ApplicationUser> userManager, 
-            SignInManager<ApplicationUser> signInManager, ITokenService tokenService)
+            SignInManager<ApplicationUser> signInManager, ITokenService tokenService, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _emailService = emailService;
         }
 
 
@@ -61,6 +63,9 @@ namespace Appointment_Scheduling.Application.Services.Implementations
                     return ApiResponse<string>.Failure($"Failed to assign Provider role");
                 }
             }
+
+            var emailMessage = $"Your Appointment Scheduling profile has been successfully created.";
+            await _emailService.SendEmailAsync(request.Email, "Welcome To Appointment Scheduling", emailMessage);
             return ApiResponse<string>.Success("Registration Successful");
         }
 
@@ -87,6 +92,12 @@ namespace Appointment_Scheduling.Application.Services.Implementations
                 Email = user.Email,
                 UserId = user.Id.ToString()
             };
+
+            DateTime currentDate = DateTime.UtcNow.AddHours(1);
+            var date = currentDate.ToString("D");
+            var time = currentDate.ToString("T");
+            var emailMessage = $"You have successfully logged into your Appointment Scheduling profile on {date} at {time}.";
+            await _emailService.SendEmailAsync(request.Email, "Login Alert", emailMessage);
 
             // Return the token in the response
             return ApiResponse<AuthenticationResult>.Success(authResult, "Login Successful");

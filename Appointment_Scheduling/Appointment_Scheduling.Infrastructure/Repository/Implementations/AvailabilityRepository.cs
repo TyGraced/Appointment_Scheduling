@@ -26,6 +26,11 @@ namespace Appointment_Scheduling.Infrastructure.Repository.Implementations
                 .SingleOrDefaultAsync();
         }
 
+        public Task<IEnumerable<ProviderAvailability?>> GetAvailabilityAsync(Guid providerId, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
+
         // Provider
         public async Task SetAvailabilityAsync(ProviderAvailability availability)
         {

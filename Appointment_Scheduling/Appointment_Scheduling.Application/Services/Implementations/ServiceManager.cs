@@ -15,20 +15,23 @@ namespace Appointment_Scheduling.Application.Services.Implementations
         private readonly Lazy<IProviderService> _providerService;
         private readonly Lazy<IAdminService> _adminService;
         private readonly Lazy<IPatientService> _patientService;
+        private readonly Lazy<IEmailService> _emailService;
         public ServiceManager(IRepositoryManager repositoryManager, IHttpContextAccessor _contextAccessor,
             UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IOptions<JwtSettings> configuration, ITokenService tokenService)
+            IOptions<JwtSettings> configuration, IOptions<GmailSettings> settings, ITokenService tokenService,IEmailService emailService)
         {
             _authenticationService = new Lazy<IAuthenticationService>(() =>
-                    new AuthenticationService(userManager, signInManager, tokenService));
+                    new AuthenticationService(userManager, signInManager, tokenService, emailService));
             _tokenService = new Lazy<ITokenService>(() =>
                     new TokenService(userManager, configuration));
             _providerService = new Lazy<IProviderService>(() =>
-                    new ProviderService(_contextAccessor, repositoryManager, userManager));
+                    new ProviderService(_contextAccessor, repositoryManager, userManager, emailService));
             _adminService = new Lazy<IAdminService>(() =>
                     new AdminService(_contextAccessor, repositoryManager, userManager));
             _patientService = new Lazy<IPatientService>(() =>
                     new PatientService(_contextAccessor, repositoryManager, userManager));
+            _emailService = new Lazy<IEmailService>(() =>
+                    new GmailService(settings));
         }
 
         public IAuthenticationService AuthenticationService => _authenticationService.Value;

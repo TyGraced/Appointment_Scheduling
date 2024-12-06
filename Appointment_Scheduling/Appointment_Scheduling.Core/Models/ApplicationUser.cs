@@ -19,5 +19,6 @@ namespace Appointment_Scheduling.Core.Models
         [Required]
         [RegularExpression(@"^\d{11}$", ErrorMessage = "NIN must be exactly 11 digits.")]
         public string NIN { get; set; } = string.Empty;
+
     }
 }

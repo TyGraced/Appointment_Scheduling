@@ -13,18 +13,23 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using FluentValidation.AspNetCore;
+using Appointment_Scheduling.Core.Validators;
+using System.Text.Json.Serialization;
 
 namespace Appointment_Scheduling.API.Extensions
 {
     public static class ServiceExtensions
     {
-        public static void ConfigureSwagger(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<ApplicationDbContext>(opt =>
+                    opt.UseNpgsql(configuration.GetConnectionString("AppointmentSchedulingConnection")));
+
             services.AddSwaggerGen(opt =>
             {
-                opt.SwaggerDoc("v1", new OpenApiInfo 
-                { 
-                    Title = "Appointment_Scheduling API", 
+                opt.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Appointment_Scheduling API",
                     Version = "v1",
                     Description = "Appointment_Scheduling API by Ty_Graced",
                     Contact = new OpenApiContact
@@ -62,41 +67,46 @@ namespace Appointment_Scheduling.API.Extensions
                     }
                 });
             });
-        }
 
-        public static void ConfigureNpgsqlContext(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddDbContext<ApplicationDbContext>(opt =>
-                    opt.UseNpgsql(configuration.GetConnectionString("AppointmentSchedulingConnection")));
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-        // Identity and Authentication
-        public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) =>
-                services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-        public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
-        {
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(opt =>
-            {
-                var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-                opt.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings!.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key!)),
-                };
-            });
-        }
+               .AddJwtBearer(opt =>
+               {
+                   var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+                   opt.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = jwtSettings!.Issuer,
+                       ValidAudience = jwtSettings.Audience,
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key!)),
+                   };
+               });
 
-        public static void ConfigureIdentity(this IServiceCollection services)
-        {
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<ITokenService, TokenService>(); 
+            services.AddScoped<IEmailService, GmailService>();
+
+            services.Configure<GmailSettings>(configuration.GetSection("GmailSettings"));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("X-Pagination"));
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(opt =>
             {
                 opt.SignIn.RequireConfirmedAccount = false;
@@ -106,19 +116,21 @@ namespace Appointment_Scheduling.API.Extensions
                 opt.Password.RequireUppercase = true;
                 opt.Password.RequireLowercase = true;
             })
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
+            services.AddControllers()
+                       .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(RegisterRequestValidator).Assembly))
+                       .AddJsonOptions(options =>
+                       {
+                           options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                           options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
+                       });
+
+            return services;
         }
 
-        public static void ConfigureLoggerService(this IServiceCollection services) =>
-            services.AddSingleton<ILoggerManager, LoggerManager>();
 
-        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
-            services.AddScoped<IRepositoryManager, RepositoryManager>();
-        
-        public static void ConfigureServiceManager(this IServiceCollection services) =>
-            services.AddScoped<IServiceManager, ServiceManager>();
 
     }
 }

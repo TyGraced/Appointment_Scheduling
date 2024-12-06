@@ -4,6 +4,7 @@
     {
         IAppointmentRepository Appointment {  get; }
         IAvailabilityRepository Availability { get; }
+        IUserRepository User { get; }
         Task SaveAsync();
     }
 }

@@ -7,7 +7,7 @@ namespace Appointment_Scheduling.Application.Services.Interfaces
     {
         Task<ApiResponse<string>> SetAvailabilityAsync(SetAvailabilityRequest request);
         Task<ApiResponse<Appointment>> GetAppointmentAsync(Guid patientId, bool trackChanges);
-        Task<ApiResponse<string>> UpdateAppointmentStatus(UpdateProviderAppointmentStatusRequest request);
+        Task<ApiResponse<string>> UpdateAppointmentStatus(UpdateProviderAppointmentStatusRequest request, bool trackChanges);
         Task<ApiResponse<IEnumerable<Appointment>>> GetAppointmentsAsync(bool trackChanges);
     }
 }

@@ -10,5 +10,6 @@ namespace Appointment_Scheduling.Infrastructure.Repository.Interfaces
 
         // Patient
         Task<ProviderAvailability?> GetAvailabilityAsync(DateTime dateTime, Guid providerId, bool trackChanges);
+        Task<IEnumerable<ProviderAvailability?>> GetAvailabilityAsync(Guid providerId, bool trackChanges);
     }
 }
